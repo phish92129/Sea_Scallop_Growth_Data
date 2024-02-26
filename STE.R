@@ -208,7 +208,7 @@ Temp.wdgd$wdgd <- sapply(Temp.wdgd$Tempc,t.weighted)
 
 # New data frame
 Temp.wdgd.F <- Temp.wdgd
-rm(Temp.wdgd)
+Temp.wdgd
 
 
 # Re-organize data, switch site to numeric and ensure that values can not decrease below 0
