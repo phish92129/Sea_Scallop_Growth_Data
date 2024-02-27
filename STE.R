@@ -1,3 +1,10 @@
+# This data set is intended to be run first and generates the data frames that feed
+# into Scallop_Analysis.R and ScallopsPlots.R.  There is a slight issue with shared
+# commands between dplyr and plyr that presents unexpectedly.  If issue with LGR 
+# calculations occurs, unload plyr package from namespace and re run.
+
+# Note: all libraries are loaded in this section
+
 #### Load libraries####
 library(ggplot2)
 library(dplyr)
@@ -12,6 +19,16 @@ library(stringr)
 library(egg)
 library(cowplot)
 library(zoo)
+library(MuMIn)
+library(glmmTMB)
+library(lme4)
+library(tidyr)
+library(agricolae)
+library(MASS)
+library(viridis)
+library(car)
+library(ggiraph)
+library(ggiraphExtra)
 
 # ----- Tier 1 (Full): Imported Data Set-----
 # Load data frame located in folder documents/R

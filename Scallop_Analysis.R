@@ -55,7 +55,7 @@ qqp(A3$Ww_Add, "norm")
 gamma <- fitdistr(A3$Ww_Add, "gamma")
 qqp(A3$Ww_Add, "gamma", shape = gamma$estimate[[1]], rate = gamma$estimate[[2]])
 
-gamma.A3 <- glmmTMB(Ww_Add ~  (1|Site) + Sh_Height + Month + wgdd.mean + Trial,
+gamma.A3 <- glmmTMB(Ww_Add ~  (1|Site) + Sh_Height + Month + Trial,
                     family= gaussian(link=log), data = A3)
 
 summary(gamma.A3)

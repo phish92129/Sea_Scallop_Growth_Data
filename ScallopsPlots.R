@@ -554,3 +554,4 @@ P6 <- ggplot(p.mort, aes (x= Date, y = weight)) +
         legend.text = element_text(size = 16))
 
 plot_grid(P6, P5,ncol = 1,labels='AUTO')
+
