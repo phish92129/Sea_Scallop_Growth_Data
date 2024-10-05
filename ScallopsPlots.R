@@ -84,6 +84,9 @@ p <- STE.dat
 # p1 <- subset(p1, Trial != "Seed")
 
 p1<- p
+p1$Trial <- as.character(p1$Trial)
+p1$Trial[p1$Trial == "Ear Hanging"] <- "Ear-Hanging"
+p1$Trial <- as.factor(p1$Trial)
 p1$M <- month.abb[p1$Month]
 P1.y1 <- subset(p1,Cohort == "y1")
 P1.y2 <- subset(p1,Cohort == "y2")
@@ -106,13 +109,13 @@ ggplot(p1, aes(y = ShellHeight))  +
   geom_hline (yintercept = 45, linetype="dashed", color = "red") +
   geom_hline (yintercept = 90, linetype="dashed", color = "red") +
   geom_hline (yintercept = 100, linetype="dashed", color = "red") +
-  annotate ("text", x = .8, y = 51, label = "Ear Hanging Size", size = 3.0)+
-  annotate ("text", x = .8, y = 96, label = "Harvest - Whole Scallop", size = 3.0)+
-  annotate ("text", x = .8, y = 106, label = "Harvest - Meat Only", size = 3.0)+
+  annotate ("text", x = .8, y = 51, label = "Ear-Hanging Size", size = 3.7)+
+  annotate ("text", x = 1, y = 96, label = "Harvest - Whole Scallop", size = 3.7)+
+  annotate ("text", x = 1, y = 106, label = "Harvest - Adductor Muscle", size = 3.7)+
   annotate ("rect", xmin = 0, xmax = 1.5, ymin = -Inf, ymax = Inf, color = 'grey', alpha = .1)+
   annotate ("rect", xmin =4, xmax = 6, ymin = -Inf, ymax = Inf, color = 'grey', alpha = .1)+
-  annotate ("text", x = .8, y = 0, label = "Restock: 250->25", size = 3.0)+
-  annotate ("text", x = 5, y = 0, label = "Restock: 25->10 or Ear Hanging", size = 3.0)+
+  annotate ("text", x = .8, y = 0, label = "Restock", size = 3.7)+
+  annotate ("text", x = 5, y = 0, label = "Restock or Ear-Hanging", size = 3.7)+
   theme_minimal() +
   scale_fill_manual(values=c("#192841", "#F79256","#0B6623"))+
   theme(panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank()) + #remove gridlines
@@ -121,16 +124,16 @@ ggplot(p1, aes(y = ShellHeight))  +
   labs(fill = "Gear Type")+
   xlab("Sample Measurement Period")+
   theme(plot.title = element_blank (),
-        strip.text.x = element_text(size=12, face="bold"), legend.position = "bottom",
-        strip.text.y = element_text(size=12, face="bold"),axis.title.x = element_text(face="bold", size=12),
-        legend.title = element_text(size=12, face="bold"), legend.text = element_text(size = 12),
-        axis.title.y = element_text(face="bold", size=12,
+        strip.text.x = element_text(size=14, face="bold"), legend.position = "bottom",
+        strip.text.y = element_text(size=14, face="bold"),axis.title.x = element_text(face="bold", size=14),
+        legend.title = element_text(size=14, face="bold"), legend.text = element_text(size = 14),
+        axis.title.y = element_text(face="bold", size=14,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0)), 
-        axis.text.y = element_text(size=12),
-        axis.text.x = element_text(size=12, angle = 35, hjust = .85),
+        axis.text.y = element_text(size=14),
+        axis.text.x = element_text(size=14, angle = 35, hjust = .85),
         panel.border = element_rect(colour = "black", fill=NA, size=1)) 
 
-# Save as 1250x500
+# Save as 1350x600
 
 ############### Figure 4 ##############
 # Temperature plot
@@ -141,36 +144,36 @@ temp.mamo <- aggregate(data = temp.ma, Tempc~Month_Yr + Site, FUN = 'mean')
 # Plot data separated by site and daily average with dots indicating monthly means
 
 ggplot(data = temp.ma, aes (y= Tempc, x=DT)) +
-  geom_line(aes(color = Site), size = 1.1, alpha = .4) +
-  geom_point(data = temp.mamo, aes(x = Month_Yr, y = Tempc, color = Site), size = 1.6) +
+  geom_line(aes(color = Site), size = 1.5, alpha = .4) +
+  geom_point(data = temp.mamo, aes(x = Month_Yr, y = Tempc, color = Site), size = 2.0) +
   #Theme presets
   theme_classic() + scale_colour_brewer(palette="Set1") +
   #remove gridlines
   theme(panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank()) + 
   theme(panel.grid.minor.x=element_blank(), panel.grid.minor.y=element_blank()) +
   # Plot Labels
-  xlab("Time")+
+  xlab("Date")+
   ylab(expression("Temperature ("*~degree*C*")"))+
   labs(color = "Sample Site")+  #Legend Title Label
   scale_x_date(breaks = seq(min(temp.mamo$Month_Yr),max(temp.mamo$Month_Yr), by = "3 month"), date_labels="%Y-%b") +
   scale_y_continuous(limits = c(0,18), breaks = c(0,2,4,6,8,10,12,14,16,18)) +
   geom_hline(aes(yintercept = 10), color = "black", linetype = 'dashed') +
   geom_hline(aes(yintercept = 15), color = "black", linetype = 'dashed') +
-  annotate("text", x = as.Date("2022-09-15"), y = 12.5, label = "Optimal Growth Range", size =6) +
+  annotate("text", x = as.Date("2022-02-15"), y = 12.5, label = "Optimal Growth Range", size =6) +
   # Aesthetic themes
   theme(plot.title = element_blank(),      #Plot title themese
-        axis.text.x  = element_text(size=16, angle = 35, hjust = .85),     #X axis themes
-        axis.title.x = element_text(face="bold", size=16),
-        strip.text.x = element_text(size=16, face="bold"),
-        axis.text.y = element_text(size=16),      #y axis themes
-        axis.title.y = element_text(face="bold", size=16),
-        strip.text.y = element_text(size=16, face="bold"),             # Legend themes
-        legend.title = element_text(size=12, face="bold"), 
-        legend.text = element_text(size = 12),
-        legend.position = c(0.90, 0.90),
+        axis.text.x  = element_text(size=20, angle = 35, hjust = .85),     #X axis themes
+        axis.title.x = element_text(size=20),
+        strip.text.x = element_text(size=20, face="bold"),
+        axis.text.y = element_text(size=20),      #y axis themes
+        axis.title.y = element_text(size=20),
+        strip.text.y = element_text(size=20, face="bold"),             # Legend themes
+        legend.title = element_text(size=16, face="bold"), 
+        legend.text = element_text(size = 16),
+        legend.position = c(0.90, 0.15),
         legend.background = element_rect(fill = "white", color = "black", size = .8),)
 
-# Save as 1600 x 650
+# Save as 1250 x 650
 
 ##### Figure 5 #######
 p.wgdd <- Temp.wdgd
@@ -243,6 +246,10 @@ newdata.ln$pred <- predict(gamma.A1.top,newdata.ln,allow.new.levels=TRUE)
 
 pred.plot <- rbind(newdata.ln,newdata.eh)
 
+pred.plot$Trial <- as.character(pred.plot$Trial)
+pred.plot$Trial[pred.plot$Trial == "Ear Hanging"] <- "Ear-Hanging"
+pred.plot$Trial <- as.factor(pred.plot$Trial)
+
 ggplot(pred.plot, aes(y = pred))+ 
   geom_point(aes(x = mean_sh, color = wgdd.mean), size = 1.0) +
   theme_minimal() +
@@ -250,20 +257,21 @@ ggplot(pred.plot, aes(y = pred))+
   facet_grid(rows = vars(Trial)) +
   theme(panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank()) + #remove gridlines
   theme(panel.grid.minor.x=element_blank(), panel.grid.minor.y=element_blank()) + #remove gridlines
-  ylab(bquote('Linear Growth Rate '(mm~day^-1)))+
+  ylab(bquote('Linear Growth Rate  '(mm~day^-1)))+
   labs(color = "WGDD")+
   xlab("Shell Height (mm)")+
   theme(plot.title = element_blank (),
         strip.text.x = element_text(size=12, face="bold"), legend.position = c(.95,.85),
-        strip.text.y = element_text(size=12, face="bold"),axis.title.x = element_text(face="bold", size=12),
+        strip.text.y = element_text(size=12, face="bold"),axis.title.x = element_text(size=12),
         legend.title = element_text(size=10, face="bold"), legend.text = element_text(size = 10),
         axis.title.y = element_text(face="bold", size=12,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0)), 
         axis.text.y = element_text(size=12),
         axis.text.x=element_text(size=12),
+        axis.ticks = element_line(),
         panel.border = element_rect(colour = "black", fill=NA, size=1))
 
-# Save as XxX
+# Save as 750x750
 
 ###### Figure 7 ######
 # Adductor weight predicted as a function of shell height
@@ -328,6 +336,7 @@ ggplot(A3, aes (x= Sh_Height, y = Ww_Add)) +
         legend.title = element_text(size=16, face="bold"), 
         legend.text = element_text(size = 16))
 
+# set to size 1050x525
 
 ###### Figure 8 #######
 # Simulated growth of shell height and adductor
@@ -394,12 +403,17 @@ max2 <- as.Date("0004-09-01")
 
 st <- ymd("0000-10-01")
 
+predicted.sh$Trial <- as.character(predicted.sh$Trial)
+predicted.sh$Trial[predicted.sh$Trial == "Ear Hanging"] <- "Ear-Hanging"
+predicted.sh$Trial <- as.factor(predicted.sh$Trial)
+
+
 P1 <- ggplot(predicted.sh, aes(y = Sh_Height))+ 
-  geom_line(aes(x = Date, color = Trial), linewidth = .1) +
+  geom_line(aes(x = Date, color = Trial), linewidth = 2) +
   annotate("rect", xmin = min3, xmax = max2, ymin = 90, ymax = 120,
-           alpha = .1,fill = "blue")+
+           alpha = .1,fill = "blue", color = "black")+
   annotate("text", x = mid, y=93,
-           label="Adductor Harvest period")+
+           label="Adductor Harvest period", size=7)+
   theme_minimal() +
   theme(panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank()) + #remove gridlines
   theme(panel.grid.minor.x=element_blank(), panel.grid.minor.y=element_blank()) + #remove gridlines
@@ -412,13 +426,13 @@ P1 <- ggplot(predicted.sh, aes(y = Sh_Height))+
   #              limits = c(min,max))+
   scale_color_manual(values=c("#192841", "#F79256"))+
   theme(plot.title = element_blank (),
-        strip.text.x = element_text(size=12, face="bold"), legend.position = 'none',
-        strip.text.y = element_text(size=12, face="bold"),axis.title.x = element_blank(),
-        legend.title = element_text(size=10, face="bold"), legend.text = element_text(size = 10),
-        axis.title.y = element_text(face="bold", size=12,
+        strip.text.x = element_text(size=16, face="bold"), legend.position = 'none',
+        strip.text.y = element_text(size=16, face="bold"),axis.title.x = element_blank(),
+        legend.title = element_text(size=16, face="bold"), legend.text = element_text(size = 16),
+        axis.title.y = element_text(face="bold", size=16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0)), 
-        axis.text.y = element_text(size=12),
-        axis.text.x=element_text(size=12,angle=35,vjust= .5),
+        axis.text.y = element_text(size=16),
+        axis.text.x=element_text(size=16,angle=35,vjust= .5),
         panel.border = element_rect(colour = "black", fill=NA, size=1))
 
 print(P1)
@@ -439,26 +453,28 @@ selected_dates.P2 <- custom_date_labels(p.tot.p2$yrdate.2, 0000, 5, mode = "brea
 selected_labels.P2[selected_labels.P2=="Dec Year 3"]<-"Nov Year 3"
 selected_labels.P2[selected_labels.P2=="Apr Year 3"]<-"May Year 3"
 
+p.tot.p2$Trial <- as.character(p.tot.p2$Trial)
+p.tot.p2$Trial[p.tot.p2$Trial == "Ear Hanging"] <- "Ear-Hanging"
+p.tot.p2$Trial <- as.factor(p.tot.p2$Trial)
+
+
 P2 <- ggplot(p.tot.p2, aes(y = pred))+ 
-  geom_point(aes(x = Date, color = Trial), size = 2.5) +
+  geom_point(aes(x = Date, color = Trial), size = 4) +
   theme_minimal() +
   theme(panel.grid.major.x=element_blank(), panel.grid.major.y=element_blank()) + #remove gridlines
   theme(panel.grid.minor.x=element_blank(), panel.grid.minor.y=element_blank()) + #remove gridlines
-  scale_y_continuous(
-    "Adductor Weight (grams)", 
-    sec.axis = sec_axis(~(1/.) * 453.5929, name = "Meats/lbs (Count)",breaks=seq(5,30,5))
-  )+
   labs(color = "Trial")+
   xlab("Time (Month)")+
+  ylab("Adductor Weight (grams)")+
   scale_x_date(breaks = selected_dates.P2, labels = selected_labels.P2) +
   scale_color_manual(values=c("#192841", "#F79256"))+
-  theme(strip.text.x = element_text(size=12, face="bold"), legend.position = 'bottom',
-        strip.text.y = element_text(size=12, face="bold"),axis.title.x = element_text(face="bold", size=12),
-        legend.title = element_text(size=10, face="bold"), legend.text = element_text(size = 10),
-        axis.title.y = element_text(face="bold", size=12,
+  theme(strip.text.x = element_text(size=16, face="bold"), legend.position = 'bottom',
+        strip.text.y = element_text(size=16, face="bold"),axis.title.x = element_text(face="bold", size=16),
+        legend.title = element_text(size=16, face="bold"), legend.text = element_text(size = 16),
+        axis.title.y = element_text(face="bold", size=16,
                                     margin = margin(t = 0, r = 10, b = 0, l = 0)), 
-        axis.text.y = element_text(size=12),
-        axis.text.x=element_text(size=12,angle=35,vjust= .5),
+        axis.text.y = element_text(size=16),
+        axis.text.x=element_text(size=16,angle=35,vjust= .5),
         panel.border = element_rect(colour = "black", fill=NA, size=1),
         panel.background = element_rect(fill='#E5E3FD'))
 
@@ -491,6 +507,9 @@ max3 <- NA
 p.mort$mortality <- as.factor(p.mort$mortality)
 p.mort$mortality <- factor(p.mort$mortality, levels = c('0%','2.5%','5%','7.5%','10%'))
 
+p.mort$Trial <- as.character(p.mort$Trial)
+p.mort$Trial[p.mort$Trial == "Ear Hanging"] <- "Ear-Hanging"
+p.mort$Trial <- as.factor(p.mort$Trial)
 
 P5 <- ggplot(p.mort, aes (x= Date, y = diff)) +
   geom_line(aes(color = mortality),linewidth=1) +
@@ -555,3 +574,4 @@ P6 <- ggplot(p.mort, aes (x= Date, y = weight)) +
 
 plot_grid(P6, P5,ncol = 1,labels='AUTO')
 
+# Size 1000x850

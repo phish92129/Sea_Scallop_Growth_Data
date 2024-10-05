@@ -67,8 +67,7 @@ gamma.A3_dredgemm <- dredge(gamma.A3, rank="AICc",
 write.csv(gamma.A3_dredgemm, file= "gammaA3_dredgemm.csv") #complete model selection output
 gamma.A3_subset<- subset(gamma.A3_dredgemm, delta <2) #confidence set model output
 write.csv(gamma.A3_subset, file="gammaA3_subset.csv")
-RI_gamma.A3 <- sw(gamma.A3_subset) #outputs variable importance if >1 model in conf.set
-print(RI_gamma.A3)
+
 
 gamma.A3.top <- glmmTMB(Ww_Add ~  (1|Site) + Sh_Height + Month,
                     family= gaussian (link = 'log'), data = A3)
